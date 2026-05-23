@@ -1,20 +1,28 @@
 from exceptions import GithubClientError, GithubConnectionError, GithubNotFoundError
 import requests
 
-def get_recent_github_issues(owner: str, repo: str, limit: int = 10, is_open: bool = True) -> dict:
-    base_url = f"https://api.github.com/repos/{owner}/{repo}/issues"
+def get_recent_github_issues(owner: str, repo: str, limit: int = 10, is_open: bool = True) -> list[dict]:
+    
+    base_url = "https://api.github.com/search/issues"
+
+    state = "open" if is_open else "closed"
+    
+    query = f"repo:{owner}/{repo} is:issue is:{state}"
+    
     params = {
+        "q": query,
         "sort": "created",
-        "direction": "desc",
-        "state": "open" if is_open else "closed",
+        "order": "desc",
         "per_page": limit
     }
 
     try:
         response = requests.get(base_url, params=params, timeout=10.0)
         response.raise_for_status()
-        return response.json()
         
+        return response.json().get("items", [])
+
+
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
             raise GithubNotFoundError(f"repo not found: {owner}/{repo}") from e
