@@ -1,7 +1,7 @@
 from exceptions import GithubClientError, GithubConnectionError, GithubNotFoundError
 import requests
 
-def get_recent_github_issues(owner: str, repo: str, limit: int = 10, is_open: bool = True) -> list:
+def get_recent_github_issues(owner: str, repo: str, limit: int = 10, is_open: bool = True) -> dict:
     base_url = f"https://api.github.com/repos/{owner}/{repo}/issues"
     params = {
         "sort": "created",
