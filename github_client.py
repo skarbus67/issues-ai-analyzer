@@ -2,7 +2,7 @@ from exceptions import GithubClientError, GithubConnectionError, GithubNotFoundE
 import requests
 from typing import Dict, List, Any
 
-def get_recent_github_issues(owner: str, repo: str, limit: int = 10, is_open: bool = True) -> List[Dict[str, Any]]:
+def get_recent_github_issues(owner: str, repo: str, limit: int = 100, is_open: bool = True) -> List[Dict[str, Any]]:
     
     base_url = "https://api.github.com/search/issues"
 
