@@ -1,20 +1,21 @@
 from exceptions import GithubClientError, GithubConnectionError, GithubNotFoundError
 import requests
 from typing import Dict, List, Any
+from config import GITHUB_OWNER, GITHUB_REPO, GITHUB_ISSUES_LIMIT
 
-def get_recent_github_issues(owner: str, repo: str, limit: int = 100, is_open: bool = True) -> List[Dict[str, Any]]:
+def get_recent_github_issues(is_open: bool = True) -> List[Dict[str, Any]]:
     
     base_url = "https://api.github.com/search/issues"
 
     state = "open" if is_open else "closed"
     
-    query = f"repo:{owner}/{repo} is:issue is:{state}"
+    query = f"repo:{GITHUB_OWNER}/{GITHUB_REPO} is:issue is:{state}"
     
     params = {
         "q": query,
         "sort": "created",
         "order": "desc",
-        "per_page": limit
+        "per_page": GITHUB_ISSUES_LIMIT
     }
 
     try:
@@ -26,7 +27,7 @@ def get_recent_github_issues(owner: str, repo: str, limit: int = 100, is_open: b
 
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
-            raise GithubNotFoundError(f"repo not found: {owner}/{repo}") from e
+            raise GithubNotFoundError(f"repo not found: {GITHUB_OWNER}/{GITHUB_REPO}") from e
         raise GithubClientError(f"api error: {e.response.status_code}") from e
         
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:

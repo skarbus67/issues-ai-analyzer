@@ -3,26 +3,22 @@ from exceptions import ClaudeClientError, ClaudeConnectionError
 from anthropic import Anthropic, APIError, APIConnectionError
 from typing import Dict, Any
 from dotenv import load_dotenv
+from config import CLAUDE_MODEL, CLAUDE_MAX_TOKENS, ANTHROPIC_API_KEY
 
 def send_claude_request(
     prompt: str,
     system_prompt: str = None,
-    model: str = "claude-opus-4-7",
-    max_tokens: int = 50000
 ) -> str:
     
-    load_dotenv()
-    api_key = os.getenv("CLAUDE_API")
-
-    if not api_key:
-        raise ClaudeClientError("missing CLAUDE_API in environment variables.")
+    if not ANTHROPIC_API_KEY:
+        raise ClaudeClientError("missing ANTHROPIC_API_KEY in environment variables.")
 
     try:
-        client = Anthropic(api_key=api_key)
+        client = Anthropic(api_key=ANTHROPIC_API_KEY)
         
         kwargs: Dict[str, Any] = {
-            "model": model,
-            "max_tokens": max_tokens,
+            "model": CLAUDE_MODEL,
+            "max_tokens": CLAUDE_MAX_TOKENS,
             "messages": [{"role": "user", "content": prompt}]
         }
         
