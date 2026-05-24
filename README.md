@@ -33,12 +33,17 @@ To run the project locally, make sure you have Python version 3.8 or newer insta
    Create a .env file in the root folder to store configuration, using .env.example as a template.
    Make sure to configure your API keys and repository details:
    
-   ANTHROPIC_API_KEY=your_api_key
-   GITHUB_OWNER=repository_owner
-   GITHUB_REPO=repository_name
-   GITHUB_ISSUES_LIMIT=100
-   CLAUDE_MODEL=claude-3-opus-20240229
-   CLAUDE_MAX_TOKENS=4000
+   ANTHROPIC_API_KEY = anthropic-api-key
+
+   GITHUB_OWNER = github-owner
+
+   GITHUB_REPO = github-repo
+
+   GITHUB_ISSUES_LIMIT = optional, default 100
+
+   CLAUDE_MODEL = optional, default claude-opus-4-7
+   
+   CLAUDE_MAX_TOKENS = optional, default 50000
 
 ## 💻 Usage
 To run the analysis and generate reports, simply execute the main script:
